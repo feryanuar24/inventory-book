@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Books - Inventory Book</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          window.location.href = "/login";
+          return;
+        }
+
+        fetch("/books", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            if (response.status === 401 || response.redirected) {
+              window.location.href = "/login";
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            window.location.href = "/login";
+          });
+      });
+    </script>
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+      <h1 class="text-3xl font-bold text-center">Book Inventory</h1>
+      <a href="/" class="text-blue-500">Home</a>
+      <div class="mt-5">
+        {{range .}}
+        <div class="p-5 bg-white shadow-md rounded-md m-2">
+          <h2 class="text-xl font-semibold">{{.Title}}</h2>
+          <p>Author: {{.Author}}</p>
+          <p>Stock: {{.Stock}}</p>
+        </div>
+        {{end}}
+      </div>
+    </div>
+  </body>
+</html>
