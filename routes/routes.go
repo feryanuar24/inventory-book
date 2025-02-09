@@ -15,7 +15,7 @@ func SetupRoutes() *mux.Router {
 
 	// HTML Routes
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		t, err := template.ParseFiles("templates/books.html")
+		t, err := template.ParseFiles("templates/index.html")
 		if err != nil {
 			http.Error(w, "Error loading template", http.StatusInternalServerError)
 			return
